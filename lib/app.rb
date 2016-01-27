@@ -15,7 +15,8 @@ end
 def create_report
 	$report_file.puts todays_date
 	$report_file.puts print_divider
-	$report_file.puts headings(:report_heading)
+	$report_file.puts product_info
+	$report_file.puts brand_info
 end
 
 def todays_date
@@ -70,7 +71,7 @@ def headings(heading)
 end
 
 def product_info
-	products_hash["items"].each do |toy|
+	$products_hash["items"].each do |toy|
 		$report_file.puts print_divider
 		$report_file.puts "Product Name: #{toy["title"]}"
 		$report_file.puts print_divider
@@ -88,6 +89,25 @@ def product_info
 		$report_file.puts "Average Discount: $#{average_discount}"
 	end
 end
+
+def brand_info
+	unique_brands = $products_hash["items"].map { |item| item["brand"] }.uniq
+		unique_brands.each do |brand|
+			$report_file.puts print_divider
+			$report_file.puts "Brand Name: #{brand}"
+			$report_file.puts print_divider
+		brand_stock = 0
+		brand_sales = 0
+		brand_purchases = 0
+		brand_names = $products_hash["items"].select { |item| item["brand"] == brand }
+			brand_names.each { |toy| brand_stock += toy["stock"].to_i }
+				$report_file.puts "Stock on Hand: #{brand_stock}"
+			brand_names.each { |item| brand_purchases += item["purchases"].length.to_i }
+			brand_names.each { |item| item["purchases"].each { |avg| brand_sales += avg["price"].to_f } }
+				brand_avg_price = (brand_sales / brand_purchases)
+					$report_file.puts "Average Brand Price: $#{brand_avg_price.round(2)}"
+		end
+	end
 
 start
 
