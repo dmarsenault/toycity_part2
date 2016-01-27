@@ -12,6 +12,12 @@ def start
 	create_report # create the Report
 end
 
+def create_report
+	$report_file.puts todays_date
+	$report_file.puts print_divider
+	$report_file.puts headings(:report_heading)
+end
+
 def todays_date
 	Time.now.strftime("%n %m/%d/%Y")
 end
@@ -21,9 +27,6 @@ def print_divider
 end
 
 setup_files
-
-
-
 
 def heading_report
 	puts " "
@@ -67,6 +70,8 @@ def headings(heading)
 		heading_brands
 	end
 end
+
+start
 
 # Print "Sales Report" in ascii art
 
