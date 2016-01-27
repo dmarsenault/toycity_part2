@@ -23,20 +23,18 @@ def todays_date
 end
 
 def print_divider
-	puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 end
 
-setup_files
-
 def heading_report
-	puts " "
-	puts "  __                         __                         "
-	puts " /         /                /  |                     /  "
-	puts "(___  ___ (  ___  ___      (___| ___  ___  ___  ___ (___"
-	puts "    )|   )| |___)|___      | |  |___)|   )|   )|   )|   "
-	puts " __/ |__/|| |__   __/      |  | |__  |__/ |__/ |    |__ "
-	puts "                                     |                  "
-	puts " "
+	" "
+	"  __                         __                         "
+	" /         /                /  |                     /  "
+	"(___  ___ (  ___  ___      (___| ___  ___  ___  ___ (___"
+	"    )|   )| |___)|___      | |  |___)|   )|   )|   )|   "
+	" __/ |__/|| |__   __/      |  | |__  |__/ |__/ |    |__ "
+	"                                     |                  "
+	" "
 end
 
 def heading_products
@@ -68,6 +66,26 @@ def headings(heading)
 		heading_products
 	elsif heading == :brands_heading
 		heading_brands
+	end
+end
+
+def product_info
+	products_hash["items"].each do |toy|
+		$report_file.puts print_divider
+		$report_file.puts "Product Name: #{toy["title"]}"
+		$report_file.puts print_divider
+		$report_file.puts "Retail Price: #{toy["full-price"]}"
+		$report_file.puts "Total Purchases: #{toy["purchases"].length}"
+			sales_total = 0.0
+			toy["purchases"].each do |sales|
+				sales_total += sales["price"].to_f
+			end
+		$report_file.puts "Total Sales: $#{sales_total}"
+		sales_average = sales_total / toy["purchases"].length
+		$report_file.puts "Average Price Paid: $#{sales_average}"
+		avg_discount = toy["full-price"].to_f - sales_average.to_f
+		average_discount = sprintf("%.2f", avg_discount)
+		$report_file.puts "Average Discount: $#{average_discount}"
 	end
 end
 
