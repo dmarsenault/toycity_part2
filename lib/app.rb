@@ -13,13 +13,13 @@ def start
 end
 
 def create_report
-	$report_file.puts headings(:report_heading)
-	$report_file.puts todays_date
+	$report_file.puts headings(:report_heading) # Print "Sales Report" in ascii art
+	$report_file.puts todays_date # Print today's date
 	$report_file.puts print_divider
-	$report_file.puts headings(:products_heading)
+	$report_file.puts headings(:products_heading) # Print "Products" in ascii art
 	product_info
 	$report_file.puts print_divider
-	$report_file.puts headings(:brands_heading)
+	$report_file.puts headings(:brands_heading) # Print "Brands" in ascii art
 	brand_info
 	$report_file.puts print_divider
 	$report_file.puts " "
@@ -83,20 +83,20 @@ end
 def product_info
 	$products_hash["items"].each do |toy|
 		$report_file.puts print_divider
-		$report_file.puts "Product Name: #{toy["title"]}"
+		$report_file.puts "Product Name: #{toy["title"]}" 	# Print the name of the toy
 		$report_file.puts print_divider
-		$report_file.puts "Retail Price: #{toy["full-price"]}"
-		$report_file.puts "Total Purchases: #{toy["purchases"].length}"
+		$report_file.puts "Retail Price: #{toy["full-price"]}" 	# Print the retail price of the toy
+		$report_file.puts "Total Purchases: #{toy["purchases"].length}" # Calculate and print the total number of purchases
 			sales_total = 0.0
 			toy["purchases"].each do |sales|
 				sales_total += sales["price"].to_f
 			end
-		$report_file.puts "Total Sales: $#{sales_total}"
+		$report_file.puts "Total Sales: $#{sales_total}" # Calculate and print the total amount of sales
 		sales_average = sales_total / toy["purchases"].length
-		$report_file.puts "Average Price Paid: $#{sales_average}"
+		$report_file.puts "Average Price Paid: $#{sales_average}" # Calculate and print the average price the toy sold for
 		avg_discount = toy["full-price"].to_f - sales_average.to_f
 		average_discount = sprintf("%.2f", avg_discount)
-		$report_file.puts "Average Discount: $#{average_discount}"
+		$report_file.puts "Average Discount: $#{average_discount}" # Calculate and print the average discount (% or $) based off the average sales price
 	end
 end
 
@@ -104,18 +104,18 @@ def brand_info
 	unique_brands = $products_hash["items"].map { |item| item["brand"] }.uniq
 		unique_brands.each do |brand|
 			$report_file.puts print_divider
-			$report_file.puts "Brand Name: #{brand}"
+			$report_file.puts "Brand Name: #{brand}" # Print the name of the brand
 			$report_file.puts print_divider
 		brand_stock = 0
 		brand_sales = 0
 		brand_purchases = 0
 		brand_names = $products_hash["items"].select { |item| item["brand"] == brand }
 			brand_names.each { |toy| brand_stock += toy["stock"].to_i }
-				$report_file.puts "Stock on Hand: #{brand_stock}"
+				$report_file.puts "Stock on Hand: #{brand_stock}" # Count and print the number of the brand's toys we stock
 			brand_names.each { |item| brand_purchases += item["purchases"].length.to_i }
 			brand_names.each { |item| item["purchases"].each { |avg| brand_sales += avg["price"].to_f } }
 				brand_avg_price = (brand_sales / brand_purchases)
-					$report_file.puts "Average Brand Price: $#{brand_avg_price.round(2)}"
+					$report_file.puts "Average Brand Price: $#{brand_avg_price.round(2)}" # Calculate and print the average price of the brand's toys
 		end
 	end
 
@@ -126,30 +126,7 @@ def brand_info
 				grand_total += grandtotal["price"].to_f
 			end
 		end
-		$report_file.puts grand_total
+		$report_file.puts grand_total # Calculate and print the total sales volume of all the brand's toys combined
 	end
 
 start
-
-# Print "Sales Report" in ascii art
-
-# Print today's date
-
-# Print "Products" in ascii art
-
-# For each product in the data set:
-	# Print the name of the toy
-
-	# Print the retail price of the toy
-	# Calculate and print the total number of purchases
-	# Calculate and print the total amount of sales
-	# Calculate and print the average price the toy sold for
-	# Calculate and print the average discount (% or $) based off the average sales price
-
-# Print "Brands" in ascii art
-
-# For each brand in the data set:
-	# Print the name of the brand
-	# Count and print the number of the brand's toys we stock
-	# Calculate and print the average price of the brand's toys
-	# Calculate and print the total sales volume of all the brand's toys combined
