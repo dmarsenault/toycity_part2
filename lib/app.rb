@@ -13,10 +13,20 @@ def start
 end
 
 def create_report
+	$report_file.puts headings(:report_heading)
 	$report_file.puts todays_date
 	$report_file.puts print_divider
-	$report_file.puts product_info
-	$report_file.puts brand_info
+	$report_file.puts headings(:products_heading)
+	product_info
+	$report_file.puts print_divider
+	$report_file.puts headings(:brands_heading)
+	brand_info
+	$report_file.puts print_divider
+	$report_file.puts " "
+	$report_file.puts print_divider
+	$report_file.puts "Grand Total Sales:"
+	$report_file.puts print_divider
+	sales_volume
 end
 
 def todays_date
@@ -28,36 +38,36 @@ def print_divider
 end
 
 def heading_report
-	" "
-	"  __                         __                         "
-	" /         /                /  |                     /  "
-	"(___  ___ (  ___  ___      (___| ___  ___  ___  ___ (___"
-	"    )|   )| |___)|___      | |  |___)|   )|   )|   )|   "
-	" __/ |__/|| |__   __/      |  | |__  |__/ |__/ |    |__ "
-	"                                     |                  "
-	" "
+	$report_file.puts " "
+	$report_file.puts "  __                         __                         "
+	$report_file.puts " /         /                /  |                     /  "
+	$report_file.puts "(___  ___ (  ___  ___      (___| ___  ___  ___  ___ (___"
+	$report_file.puts "    )|   )| |___)|___      | |  |___)|   )|   )|   )|   "
+	$report_file.puts " __/ |__/|| |__   __/      |  | |__  |__/ |__/ |    |__ "
+	$report_file.puts "                                     |                  "
+	$report_file.puts " "
 end
 
 def heading_products
-	puts "                     _            _       "
-	puts "                    | |          | |      "
-	puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
-	puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
-	puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
-	puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
-	puts "| |                                       "
-	puts "|_|                                       "
+	$report_file.puts "                     _            _       "
+	$report_file.puts "                    | |          | |      "
+	$report_file.puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
+	$report_file.puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
+	$report_file.puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
+	$report_file.puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
+	$report_file.puts "| |                                       "
+	$report_file.puts "|_|                                       "
 end
 
 
 def heading_brands
-	puts " _                         _     "
-	puts "| |                       | |    "
-	puts "| |__  _ __ __ _ _ __   __| |___ "
-	puts "| '_ \\| '__/ _` | '_ \\ / _` / __|"
-	puts "| |_) | | | (_| | | | | (_| \\__ \\"
-	puts "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"
-	puts
+	$report_file.puts " _                         _     "
+	$report_file.puts "| |                       | |    "
+	$report_file.puts "| |__  _ __ __ _ _ __   __| |___ "
+	$report_file.puts "| '_ \\| '__/ _` | '_ \\ / _` / __|"
+	$report_file.puts "| |_) | | | (_| | | | | (_| \\__ \\"
+	$report_file.puts "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"
+	$report_file.puts
 end
 
 def headings(heading)
@@ -107,6 +117,16 @@ def brand_info
 				brand_avg_price = (brand_sales / brand_purchases)
 					$report_file.puts "Average Brand Price: $#{brand_avg_price.round(2)}"
 		end
+	end
+
+	def sales_volume
+		grand_total = 0
+		$products_hash["items"].each do |toy|
+			toy["purchases"].each do |grandtotal|
+				grand_total += grandtotal["price"].to_f
+			end
+		end
+		$report_file.puts grand_total
 	end
 
 start
